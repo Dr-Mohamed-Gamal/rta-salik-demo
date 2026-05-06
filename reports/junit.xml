@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="50" time="0.154" timestamp="2026-05-06T11:11:25.303332+04:00" hostname="Mohameds-MacBook-Pro-2664.local"><testcase classname="tests.test_generated_tariff" name="test_time_boundaries_weekday[1-0-expected0-T-H1: Free window start at 01:00]" time="0.003" /><testcase classname="tests.test_generated_tariff" name="test_time_boundaries_weekday[5-59-expected1-T-H2: Free window end at 05:59]" time="0.001" /><testcase classname="tests.test_generated_tariff" name="test_time_boundaries_weekday[6-0-expected2-T-H3: Transition from free to peak at 06:00]" time="0.000" /><testcase classname="tests.test_generated_tariff" name="test_time_boundaries_weekday[9-59-expected3-T-H5: Morning peak end at 09:59]" time="0.001" /><testcase classname="tests.test_generated_tariff" name="test_time_boundaries_weekday[10-0-expected4-T-H6: Peak to off-peak at 10:00]" time="0.000" /><testcase classname="tests.test_generated_tariff" name="test_time_boundaries_weekday[16-0-expected5-T-H7: Evening peak start at 16:00]" time="0.001" /><testcase classname="tests.test_generated_tariff" name="test_time_boundaries_weekday[19-59-expected6-T-H8: Evening peak end at 19:59]" time="0.001" /><testcase classname="tests.test_generated_tariff" name="test_time_boundaries_weekday[20-0-expected7-T-H9: Peak to off-peak at 20:00]" time="0.000" /><testcase classname="tests.test_generated_tariff" name="test_time_boundaries_weekday[23-59-expected8-T-H12: Before midnight]" time="0.000" /><testcase classname="tests.test_generated_tariff" name="test_time_boundaries_weekday[0-0-expected9-T-H12: After midnight]" time="0.000" /><testcase classname="tests.test_generated_tariff" name="test_saturday_is_offpeak_all_day" time="0.001"><failure message="AssertionError: assert Decimal('0.00') == Decimal('4.00')&#10; +  where Decimal('0.00') = toll_for(datetime.datetime(2026, 5, 9, 8, 0))&#10; +    where datetime.datetime(2026, 5, 9, 8, 0) = &lt;built-in method replace of datetime.datetime object at 0x1073d1350&gt;(hour=8)&#10; +      where &lt;built-in method replace of datetime.datetime object at 0x1073d1350&gt; = datetime.datetime(2026, 5, 9, 0, 0).replace">def test_saturday_is_offpeak_all_day():
+        """Covers T-H10: Saturday (weekday=5) is off-peak all day."""
+&gt;       assert toll_for(SAT.replace(hour=8)) == OFFPEAK_TOLL
+E       AssertionError: assert Decimal('0.00') == Decimal('4.00')
+E        +  where Decimal('0.00') = toll_for(datetime.datetime(2026, 5, 9, 8, 0))
+E        +    where datetime.datetime(2026, 5, 9, 8, 0) = &lt;built-in method replace of datetime.datetime object at 0x1073d1350&gt;(hour=8)
+E        +      where &lt;built-in method replace of datetime.datetime object at 0x1073d1350&gt; = datetime.datetime(2026, 5, 9, 0, 0).replace
+
+tests/test_generated_tariff.py:43: AssertionError</failure></testcase><testcase classname="tests.test_generated_tariff" name="test_sunday_free_during_peak_hours" time="0.001"><failure message="AssertionError: assert Decimal('4.00') == Decimal('0.00')&#10; +  where Decimal('4.00') = toll_for(datetime.datetime(2026, 5, 3, 7, 0))&#10; +    where datetime.datetime(2026, 5, 3, 7, 0) = &lt;built-in method replace of datetime.datetime object at 0x1073d23d0&gt;(hour=7)&#10; +      where &lt;built-in method replace of datetime.datetime object at 0x1073d23d0&gt; = datetime.datetime(2026, 5, 3, 0, 0).replace">def test_sunday_free_during_peak_hours():
+        """Covers T-H11: Sunday free even during what would be peak hours."""
+&gt;       assert toll_for(SUN.replace(hour=7)) == FREE
+E       AssertionError: assert Decimal('4.00') == Decimal('0.00')
+E        +  where Decimal('4.00') = toll_for(datetime.datetime(2026, 5, 3, 7, 0))
+E        +    where datetime.datetime(2026, 5, 3, 7, 0) = &lt;built-in method replace of datetime.datetime object at 0x1073d23d0&gt;(hour=7)
+E        +      where &lt;built-in method replace of datetime.datetime object at 0x1073d23d0&gt; = datetime.datetime(2026, 5, 3, 0, 0).replace
+
+tests/test_generated_tariff.py:49: AssertionError</failure></testcase><testcase classname="tests.test_generated_tariff" name="test_free_window_applies_on_saturday" time="0.000" /><testcase classname="tests.test_generated_tariff" name="test_free_window_applies_on_sunday" time="0.000" /><testcase classname="tests.test_generated_tariff" name="test_weekday_rules[0-7-expected0]" time="0.000" /><testcase classname="tests.test_generated_tariff" name="test_weekday_rules[1-7-expected1]" time="0.000" /><testcase classname="tests.test_generated_tariff" name="test_weekday_rules[2-7-expected2]" time="0.001" /><testcase classname="tests.test_generated_tariff" name="test_weekday_rules[3-7-expected3]" time="0.000" /><testcase classname="tests.test_generated_tariff" name="test_weekday_rules[4-7-expected4]" time="0.000" /><testcase classname="tests.test_generated_tariff" name="test_weekday_rules[5-7-expected5]" time="0.000"><failure message="AssertionError: assert Decimal('0.00') == Decimal('4.00')&#10; +  where Decimal('0.00') = toll_for(datetime.datetime(2026, 5, 9, 7, 0))">weekday_offset = 5, hour = 7, expected = Decimal('4.00')
+
+    @pytest.mark.parametrize("weekday_offset,hour,expected", [
+        (0, 7, PEAK_TOLL),    # T-M4: Monday morning peak
+        (1, 7, PEAK_TOLL),    # Tuesday morning peak
+        (2, 7, PEAK_TOLL),    # Wednesday morning peak
+        (3, 7, PEAK_TOLL),    # Thursday morning peak
+        (4, 7, PEAK_TOLL),    # T-M3: Friday morning peak
+        (5, 7, OFFPEAK_TOLL), # T-H10: Saturday morning off-peak
+        (6, 7, FREE),         # T-H11: Sunday morning free
+    ])
+    def test_weekday_rules(weekday_offset, hour, expected):
+        """Covers T-M3, T-M4: Verify all weekdays follow correct rules."""
+        from datetime import timedelta
+        dt = MON.replace(hour=hour) + timedelta(days=weekday_offset)
+&gt;       assert toll_for(dt) == expected
+E       AssertionError: assert Decimal('0.00') == Decimal('4.00')
+E        +  where Decimal('0.00') = toll_for(datetime.datetime(2026, 5, 9, 7, 0))
+
+tests/test_generated_tariff.py:76: AssertionError</failure></testcase><testcase classname="tests.test_generated_tariff" name="test_weekday_rules[6-7-expected6]" time="0.001"><failure message="AssertionError: assert Decimal('4.00') == Decimal('0.00')&#10; +  where Decimal('4.00') = toll_for(datetime.datetime(2026, 5, 10, 7, 0))">weekday_offset = 6, hour = 7, expected = Decimal('0.00')
+
+    @pytest.mark.parametrize("weekday_offset,hour,expected", [
+        (0, 7, PEAK_TOLL),    # T-M4: Monday morning peak
+        (1, 7, PEAK_TOLL),    # Tuesday morning peak
+        (2, 7, PEAK_TOLL),    # Wednesday morning peak
+        (3, 7, PEAK_TOLL),    # Thursday morning peak
+        (4, 7, PEAK_TOLL),    # T-M3: Friday morning peak
+        (5, 7, OFFPEAK_TOLL), # T-H10: Saturday morning off-peak
+        (6, 7, FREE),         # T-H11: Sunday morning free
+    ])
+    def test_weekday_rules(weekday_offset, hour, expected):
+        """Covers T-M3, T-M4: Verify all weekdays follow correct rules."""
+        from datetime import timedelta
+        dt = MON.replace(hour=hour) + timedelta(days=weekday_offset)
+&gt;       assert toll_for(dt) == expected
+E       AssertionError: assert Decimal('4.00') == Decimal('0.00')
+E        +  where Decimal('4.00') = toll_for(datetime.datetime(2026, 5, 10, 7, 0))
+
+tests/test_generated_tariff.py:76: AssertionError</failure></testcase><testcase classname="tests.test_generated_tariff" name="test_late_evening_offpeak" time="0.000" /><testcase classname="tests.test_generated_violations" name="test_annual_cap_at_exact_boundary" time="0.003" /><testcase classname="tests.test_generated_violations" name="test_annual_cap_one_cent_below" time="0.000" /><testcase classname="tests.test_generated_violations" name="test_tenth_violation_still_top_tier" time="0.000" /><testcase classname="tests.test_generated_violations" name="test_plate_with_zero_violations" time="0.000" /><testcase classname="tests.test_generated_violations" name="test_annual_cap_edge_cases[initial_total0-expected_fine0-V-H7: Room for full 100 fine]" time="0.000" /><testcase classname="tests.test_generated_violations" name="test_annual_cap_edge_cases[initial_total1-expected_fine1-V-H7: Partial fine (50 remaining)]" time="0.000" /><testcase classname="tests.test_generated_violations" name="test_annual_cap_edge_cases[initial_total2-expected_fine2-V-H7: Only 1 AED remaining]" time="0.000" /><testcase classname="tests.test_generated_violations" name="test_annual_cap_edge_cases[initial_total3-expected_fine3-V-H6: At cap exactly]" time="0.000" /><testcase classname="tests.test_generated_violations" name="test_registry_state_persistence" time="0.000" /><testcase classname="tests.test_system" name="test_peak_pass_debits_six_aed" time="0.008" /><testcase classname="tests.test_system" name="test_offpeak_pass_debits_four_aed" time="0.000" /><testcase classname="tests.test_system" name="test_free_window_does_not_debit" time="0.000" /><testcase classname="tests.test_system" name="test_unregistered_plate_gets_fined" time="0.000" /><testcase classname="tests.test_system" name="test_insufficient_balance_fines_instead_of_tolling" time="0.000" /><testcase classname="tests.test_system" name="test_cannot_link_same_plate_twice" time="0.000" /><testcase classname="tests.test_system" name="test_low_balance_alert" time="0.001" /><testcase classname="tests.test_system" name="test_minimum_topup_enforced" time="0.000" /><testcase classname="tests.test_tariff" name="test_free_window_applies_every_day" time="0.000" /><testcase classname="tests.test_tariff" name="test_sunday_is_free_all_day" time="0.000"><failure message="AssertionError: assert Decimal('4.00') == 0&#10; +  where Decimal('4.00') = toll_for(datetime.datetime(2026, 5, 3, 8, 0))&#10; +    where datetime.datetime(2026, 5, 3, 8, 0) = &lt;built-in method replace of datetime.datetime object at 0x107424150&gt;(hour=8)&#10; +      where &lt;built-in method replace of datetime.datetime object at 0x107424150&gt; = datetime.datetime(2026, 5, 3, 0, 0).replace">def test_sunday_is_free_all_day():
+&gt;       assert toll_for(SUN.replace(hour=8)) == 0
+E       AssertionError: assert Decimal('4.00') == 0
+E        +  where Decimal('4.00') = toll_for(datetime.datetime(2026, 5, 3, 8, 0))
+E        +    where datetime.datetime(2026, 5, 3, 8, 0) = &lt;built-in method replace of datetime.datetime object at 0x107424150&gt;(hour=8)
+E        +      where &lt;built-in method replace of datetime.datetime object at 0x107424150&gt; = datetime.datetime(2026, 5, 3, 0, 0).replace
+
+tests/test_tariff.py:18: AssertionError</failure></testcase><testcase classname="tests.test_tariff" name="test_weekday_morning_peak" time="0.000" /><testcase classname="tests.test_tariff" name="test_weekday_evening_peak" time="0.000" /><testcase classname="tests.test_tariff" name="test_weekday_offpeak_midday" time="0.000" /><testcase classname="tests.test_tariff" name="test_peak_window_is_half_open" time="0.000" /><testcase classname="tests.test_tariff" name="test_returns_decimal" time="0.000" /><testcase classname="tests.test_violations" name="test_first_three_offences_follow_schedule" time="0.000" /><testcase classname="tests.test_violations" name="test_fourth_offence_stays_at_top_tier" time="0.000" /><testcase classname="tests.test_violations" name="test_annual_cap_clamps_final_fine" time="0.000" /><testcase classname="tests.test_violations" name="test_separate_plates_have_separate_counters" time="0.000" /></testsuite></testsuites>
